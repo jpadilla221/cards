@@ -1,36 +1,50 @@
 package edu.cnm.deepdive.model;
 
+import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 public class Deck {
 
-  private Card[]card;
+  private List<Card> cards;
+  private List<Card> dealt;
 
-  public Deck(Random rng) {
-    card = new Card[Suit.values().length * Rank.values().length];
-    int position = 0;
-    for(Suit s : Suit.values()){
-      for(Rank r : Rank.values()){
-        card[position++] = new Card(s, r);
+  public Deck() {
+    cards = new ArrayList<>();
+    dealt = new LinkedList<>();
+    for (Suit s : Suit.values()) {
+      for (Rank r : Rank.values()) {
+        cards.add(new Card(s, r));
 
       }
     }
-   for (int i = card.length -1; i > 0; i--) {
-     int j = rng.nextInt(i + 1);
-     Card temp =card[i];
-     card[i]= card[j];
-     card[j] = temp;
-   }
+  }
+
+  public Card deal() {
+    Card card = cards.isEmpty() ? null : cards.remove(0);
+    if (card != null) {
+      dealt.add(card);
+    }
+    return card;
+  }
+
+  public void shuffle(Random rng) {
+    Collections.shuffle(cards, rng);
   }
 
   @Override
   public String toString() {
-    return Arrays.toString(card);
+    return cards.toString();
   }
 
   public static void main(String[] args) {
-    Deck deck = new Deck(new Random());
+    Deck deck = new Deck();
+    System.out.println(deck);
+    deck.shuffle(new SecureRandom());
     System.out.println(deck);
   }
 }
