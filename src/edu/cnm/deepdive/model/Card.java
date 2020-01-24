@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class Card {
 
+
   private final Suit suit;
   private final Rank rank;
   private final int hash;
